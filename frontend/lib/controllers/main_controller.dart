@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
-import '../views/dashboard.dart';
-import '../views/login.dart';
-import '../views/signup.dart';
+import '../screens/dashboard.dart';
+import '../screens/login_screen.dart';
+import '../screens/signup_screen.dart';
 
 class MainController extends ChangeNotifier {
-  Widget _currentPage = Dashboard();
+  int _currentIndex = 0;
+  int get currentIndex => _currentIndex;
 
-  Widget get currentPage => _currentPage;
+  final _pages = const [
+    Dashboard(),
+    LoginScreen(),
+    SignUpScreen(),
+  ];
 
-  void returnToDashboard() {
-    _currentPage = Dashboard();
+  Widget get currentPage => _pages[_currentIndex];
+
+  void setIndex(int i) {
+    if (i == _currentIndex) return;
+    _currentIndex = i;
     notifyListeners();
   }
 
-  void showSignUp() {
-    //_currentPage = SignupScreen();
-    //notifyListeners();
-  }
-
-  void goToLogin() {
-    //_currentPage = Login();
-    //notifyListeners();
-  }
+  void returnToDashboard() => setIndex(0);
+  void goToLogin() => setIndex(1);
+  void showSignUp() => setIndex(2);
 }
