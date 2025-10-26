@@ -1,0 +1,64 @@
+import 'package:flutter/material.dart';
+import 'package:frontend/models/models.dart';
+
+// ----- Mock Reminders (Sprint 3: 1a, 1b, 1c) -----
+final List<Reminder> kMockReminders = [
+  Reminder(
+    id: 'r-001',
+    weekday: DateTime.thursday, // 4
+    time: const TimeOfDay(hour: 7, minute: 30),
+    types: {PickupType.recycling},
+    note: 'Rinse bottles/cans',
+    enabled: true,
+  ),
+  Reminder(
+    id: 'r-002',
+    weekday: DateTime.monday, // 1
+    time: const TimeOfDay(hour: 7, minute: 0),
+    types: {PickupType.trash},
+    note: 'Put out trash bin',
+    enabled: true,
+  ),
+  Reminder(
+    id: 'r-003',
+    weekday: DateTime.wednesday, // 3
+    time: const TimeOfDay(hour: 18, minute: 30),
+    types: {PickupType.compost},
+    note: 'Bring compost bin back in',
+    enabled: true,
+  ),
+];
+
+// ----- Mock Recycling Centers (Sprint 3: 2a) -----
+final List<RecyclingCenter> kMockCenters = const [
+  RecyclingCenter(
+    id: 'c-001',
+    name: 'Green City Recycling',
+    address: '123 Elm St, San Jose, CA 95112',
+    phone: '(408) 555-0123',
+    website: 'https://example.org/greencity',
+    accepted: ['Plastic #1', 'Plastic #2', 'Glass', 'Paper', 'Cardboard'],
+    hours: 'Mon–Sat 9:00–17:00',
+    notes: 'Drive-through drop-off; rinse containers.',
+  ),
+  RecyclingCenter(
+    id: 'c-002',
+    name: 'EcoDrop Center',
+    address: '42 Market Ave, San Jose, CA 95126',
+    phone: '(408) 555-0456',
+    website: 'https://example.org/ecodrop',
+    accepted: ['Electronics', 'Batteries', 'Metal', 'Glass'],
+    hours: 'Tue–Sun 10:00–18:00',
+    notes: 'e-Waste accepted first Saturday each month.',
+  ),
+  RecyclingCenter(
+    id: 'c-003',
+    name: 'Valley Compost & Recycling',
+    address: '800 Orchard Rd, Santa Clara, CA 95050',
+    phone: '(408) 555-0789',
+    website: 'https://example.org/valley',
+    accepted: ['Compost', 'Yard Waste', 'Paper', 'Cardboard'],
+    hours: 'Daily 8:00–16:00',
+    notes: 'Residents only; bring ID.',
+  ),
+];

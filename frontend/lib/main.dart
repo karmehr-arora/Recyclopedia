@@ -24,18 +24,43 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorSchemeSeed: Colors.green,
         useMaterial3: true,
+        scaffoldBackgroundColor: Colors.grey[50],
+        textTheme: const TextTheme(
+          bodyMedium: TextStyle(fontSize: 16),
+        ),
       ),
       home: Scaffold(
-        appBar: AppBar(title: const Text("Recyclopedia")),
-        body: controller.currentPage,
+        appBar: AppBar(
+          title: const Text(
+            "Recyclopedia",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          backgroundColor: Colors.green,
+          foregroundColor: Colors.white,
+        ),
+        body: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 300),
+          child: controller.currentPage,
+        ),
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: controller.currentIndex,
-          items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-            BottomNavigationBarItem(icon: Icon(Icons.login), label: "Login"),
-            BottomNavigationBarItem(icon: Icon(Icons.person_add), label: "Sign Up"),
-          ],
+          selectedItemColor: Colors.green,
+          unselectedItemColor: Colors.grey,
           onTap: controller.setIndex,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.dashboard),
+              label: "Dashboard",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.login),
+              label: "Login",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person_add),
+              label: "Sign Up",
+            ),
+          ],
         ),
       ),
     );
