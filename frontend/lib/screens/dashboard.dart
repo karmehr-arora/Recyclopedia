@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'recycling_centers_screen.dart';
-import 'reminders_screen.dart'; // ✅ Added import for your new screen
+import 'reminders_screen.dart'; // Added import for your new screen
 
 class Dashboard extends StatelessWidget {
   const Dashboard({super.key});
