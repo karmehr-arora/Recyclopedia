@@ -1,11 +1,13 @@
 // lib/controllers/main_controller.dart
 import 'package:flutter/material.dart';
+
 import '../screens/dashboard.dart';
 import '../screens/login_screen.dart';
 import '../screens/signup_screen.dart';
 
 import '../models/models.dart';
 import '../repository/app_repository.dart';
+import '../common/mock_data.dart'; // mock reminders/centers/schedules
 
 class MainController extends ChangeNotifier {
   // ---------------------------
@@ -33,7 +35,7 @@ class MainController extends ChangeNotifier {
   void showSignUp() => setIndex(2);
 
   // ---------------------------
-  // Data via repository
+  // Data via repository + mocks
   // ---------------------------
   final AppRepository repo;
   MainController({AppRepository? repository})
@@ -46,14 +48,20 @@ class MainController extends ChangeNotifier {
 
   List<Reminder> _reminders = [];
   List<RecyclingCenter> _centers = [];
+  List<PickupSchedule> _schedules = []; // Sprint 4
 
   List<Reminder> get reminders => List.unmodifiable(_reminders);
   List<RecyclingCenter> get centers => List.unmodifiable(_centers);
+  List<PickupSchedule> get schedules => List.unmodifiable(_schedules);
 
   Future<void> _init() async {
-    // If you want extra safety, wrap in try/catch. Not required.
+    // Load existing data from repo
     _reminders = await repo.fetchReminders();
     _centers = await repo.fetchRecyclingCenters();
+
+    // Inject Sprint 4 pickup schedules from mock data
+    _schedules = List<PickupSchedule>.of(kMockPickupSchedules);
+
     _loading = false;
     notifyListeners();
   }
@@ -83,6 +91,14 @@ class MainController extends ChangeNotifier {
   // ------ Recycling centers actions ------
   Future<void> searchCenters(String? query) async {
     _centers = await repo.fetchRecyclingCenters(query: query);
+    notifyListeners();
+  }
+
+  // ------ Pickup Schedule (Sprint 4) ------
+  void setSchedules(List<PickupSchedule> list) {
+    _schedules
+      ..clear()
+      ..addAll(list);
     notifyListeners();
   }
 }
