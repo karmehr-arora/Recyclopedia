@@ -8,9 +8,7 @@ import '../models/models.dart';
 import '../repository/app_repository.dart';
 
 class MainController extends ChangeNotifier {
-  // ---------------------------
-  // Page switching (bottom nav)
-  // ---------------------------
+  // Bottom navigation state
   int _currentIndex = 0;
   int get currentIndex => _currentIndex;
 
@@ -24,6 +22,7 @@ class MainController extends ChangeNotifier {
 
   void setIndex(int i) {
     if (i == _currentIndex) return;
+    if (i < 0 || i >= _pages.length) return; // index guard
     _currentIndex = i;
     notifyListeners();
   }
@@ -32,9 +31,7 @@ class MainController extends ChangeNotifier {
   void goToLogin() => setIndex(1);
   void showSignUp() => setIndex(2);
 
-  // ---------------------------
-  // Data via repository
-  // ---------------------------
+  // Repository and initial load
   final AppRepository repo;
   MainController({AppRepository? repository})
       : repo = repository ?? MockAppRepository() {
@@ -51,14 +48,13 @@ class MainController extends ChangeNotifier {
   List<RecyclingCenter> get centers => List.unmodifiable(_centers);
 
   Future<void> _init() async {
-    // If you want extra safety, wrap in try/catch. Not required.
     _reminders = await repo.fetchReminders();
     _centers = await repo.fetchRecyclingCenters();
     _loading = false;
     notifyListeners();
   }
 
-  // -------- Reminders actions --------
+  // Reminders actions
   Future<void> toggleReminder(String id) async {
     final i = _reminders.indexWhere((r) => r.id == id);
     if (i == -1) return;
@@ -80,7 +76,7 @@ class MainController extends ChangeNotifier {
     notifyListeners();
   }
 
-  // ------ Recycling centers actions ------
+  // Recycling centers actions
   Future<void> searchCenters(String? query) async {
     _centers = await repo.fetchRecyclingCenters(query: query);
     notifyListeners();
