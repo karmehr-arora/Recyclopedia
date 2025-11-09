@@ -56,8 +56,8 @@ class MainController extends ChangeNotifier {
 
   Future<void> _init() async {
     // Load existing data from repo
-    _reminders = await repo.fetchReminders();
-    _centers = await repo.fetchRecyclingCenters();
+    _reminders = List.from(await repo.fetchReminders());
+    _centers = List.from(await repo.fetchRecyclingCenters());
 
     // Inject Sprint 4 pickup schedules from mock data
     _schedules = List<PickupSchedule>.of(kMockPickupSchedules);
@@ -79,6 +79,13 @@ class MainController extends ChangeNotifier {
   Future<void> addReminder(Reminder r) async {
     final created = await repo.createReminder(r);
     _reminders.add(created);
+    notifyListeners();
+  }
+
+  Future<void> updateReminder(Reminder r) async {
+    final updated = await repo.updateReminder(r);
+    final idx = _reminders.indexWhere((r) => r.id == updated.id);
+    if (idx != -1) _reminders[idx] = updated;
     notifyListeners();
   }
 
