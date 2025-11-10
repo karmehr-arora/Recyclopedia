@@ -1,0 +1,55 @@
+// lib/screens/scan_page.dart
+import 'package:flutter/material.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
+
+class ScanPage extends StatefulWidget {
+  const ScanPage({super.key});
+
+  @override
+  State<ScanPage> createState() => _ScanPageState();
+}
+
+class _ScanPageState extends State<ScanPage> {
+  bool _handled = false; // prevent multiple firings
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Scan Barcode')),
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          // Camera + barcode detector
+          MobileScanner(
+            // set to true if you also want QR; defaults cover EAN/UPC/etc.
+            onDetect: (capture) {
+              if (_handled) return;
+              final codes = capture.barcodes;
+              if (codes.isEmpty) return;
+              final raw = codes.first.rawValue ?? '';
+              if (raw.isEmpty) return;
+              _handled = true;
+              Navigator.of(context).pop(raw); // return the barcode to caller
+            },
+          ),
+          // Simple overlay hint
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              margin: const EdgeInsets.all(16),
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+              decoration: BoxDecoration(
+                color: Colors.black54,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: const Text(
+                'Point the camera at the product barcode',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}

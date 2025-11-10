@@ -1,15 +1,17 @@
 // lib/controllers/main_controller.dart
 import 'package:flutter/material.dart';
+
 import '../screens/dashboard.dart';
 import '../screens/login_screen.dart';
 import '../screens/signup_screen.dart';
 
 import '../models/models.dart';
 import '../repository/app_repository.dart';
+import '../services/recyclable_service.dart';
 
 class MainController extends ChangeNotifier {
   // ---------------------------
-  // Page switching (bottom nav)
+  // Bottom navigation / pages
   // ---------------------------
   int _currentIndex = 0;
   int get currentIndex => _currentIndex;
@@ -19,7 +21,6 @@ class MainController extends ChangeNotifier {
     LoginScreen(),
     SignUpScreen(),
   ];
-
   Widget get currentPage => _pages[_currentIndex];
 
   void setIndex(int i) {
@@ -51,7 +52,6 @@ class MainController extends ChangeNotifier {
   List<RecyclingCenter> get centers => List.unmodifiable(_centers);
 
   Future<void> _init() async {
-    // If you want extra safety, wrap in try/catch. Not required.
     _reminders = await repo.fetchReminders();
     _centers = await repo.fetchRecyclingCenters();
     _loading = false;
@@ -83,6 +83,45 @@ class MainController extends ChangeNotifier {
   // ------ Recycling centers actions ------
   Future<void> searchCenters(String? query) async {
     _centers = await repo.fetchRecyclingCenters(query: query);
+    notifyListeners();
+  }
+
+  // ---------------------------
+  // Recyclability check (API)
+  // ---------------------------
+  Map<String, dynamic>? _productInfo;
+  String? _checkError;
+  bool _checking = false;
+
+  Map<String, dynamic>? get productInfo => _productInfo;
+  String? get checkError => _checkError;
+  bool get checking => _checking;
+
+  /// Calls backend /api/checkRecyclable with the provided barcode.
+  Future<void> checkProductByBarcode(String barcode) async {
+    final code = barcode.trim();
+    if (code.isEmpty) return;
+
+    _checking = true;
+    _checkError = null;
+    _productInfo = null;
+    notifyListeners();
+
+    try {
+      final data = await RecyclableService.checkRecyclable(code);
+      _productInfo = data;
+    } catch (e) {
+      _checkError = e.toString();
+    } finally {
+      _checking = false;
+      notifyListeners();
+    }
+  }
+
+  /// Clears last recyclability result.
+  void clearProductInfo() {
+    _productInfo = null;
+    _checkError = null;
     notifyListeners();
   }
 }

@@ -10,23 +10,34 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
+
     private final UserRepository users;
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-    public AuthService(UserRepository users){ this.users = users; }
+    public AuthService(UserRepository users) {
+        this.users = users;
+    }
 
     public void signup(SignupRequest req) {
-        String email = req.email.toLowerCase();
+        // use getters; normalize email
+        final String email = req.getEmail().trim().toLowerCase();
+        final String name  = req.getName().trim();
+        final String raw   = req.getPassword();
+
         if (users.findByEmail(email).isPresent()) {
             throw new DataIntegrityViolationException("email already exists");
         }
-        String hash = encoder.encode(req.password);
-        users.save(new User(req.name, email, hash));
+
+        final String hash = encoder.encode(raw);
+        users.save(new User(name, email, hash));
     }
 
     public boolean login(LoginRequest req) {
-        return users.findByEmail(req.email.toLowerCase())
-                .map(u -> encoder.matches(req.password, u.getPasswordHash()))
+        final String email = req.getEmail().trim().toLowerCase();
+        final String raw   = req.getPassword();
+
+        return users.findByEmail(email)
+                .map(u -> encoder.matches(raw, u.getPasswordHash()))
                 .orElse(false);
     }
 }
