@@ -7,11 +7,11 @@ import '../screens/signup_screen.dart';
 
 import '../models/models.dart';
 import '../repository/app_repository.dart';
-import '../services/recyclable_service.dart';
+import '../common/mock_data.dart'; // mock reminders/centers/schedules
 
 class MainController extends ChangeNotifier {
   // ---------------------------
-  // Bottom navigation / pages
+  // Page switching (bottom nav)
   // ---------------------------
   int _currentIndex = 0;
   int get currentIndex => _currentIndex;
@@ -21,6 +21,7 @@ class MainController extends ChangeNotifier {
     LoginScreen(),
     SignUpScreen(),
   ];
+
   Widget get currentPage => _pages[_currentIndex];
 
   void setIndex(int i) {
@@ -34,7 +35,7 @@ class MainController extends ChangeNotifier {
   void showSignUp() => setIndex(2);
 
   // ---------------------------
-  // Data via repository
+  // Data via repository + mocks
   // ---------------------------
   final AppRepository repo;
   MainController({AppRepository? repository})
@@ -47,13 +48,20 @@ class MainController extends ChangeNotifier {
 
   List<Reminder> _reminders = [];
   List<RecyclingCenter> _centers = [];
+  List<PickupSchedule> _schedules = []; // Sprint 4
 
   List<Reminder> get reminders => List.unmodifiable(_reminders);
   List<RecyclingCenter> get centers => List.unmodifiable(_centers);
+  List<PickupSchedule> get schedules => List.unmodifiable(_schedules);
 
   Future<void> _init() async {
-    _reminders = await repo.fetchReminders();
-    _centers = await repo.fetchRecyclingCenters();
+    // Load existing data from repo
+    _reminders = List.from(await repo.fetchReminders());
+    _centers = List.from(await repo.fetchRecyclingCenters());
+
+    // Inject Sprint 4 pickup schedules from mock data
+    _schedules = List<PickupSchedule>.of(kMockPickupSchedules);
+
     _loading = false;
     notifyListeners();
   }
@@ -74,6 +82,13 @@ class MainController extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> updateReminder(Reminder r) async {
+    final updated = await repo.updateReminder(r);
+    final idx = _reminders.indexWhere((r) => r.id == updated.id);
+    if (idx != -1) _reminders[idx] = updated;
+    notifyListeners();
+  }
+
   Future<void> deleteReminder(String id) async {
     await repo.deleteReminder(id);
     _reminders.removeWhere((r) => r.id == id);
@@ -86,42 +101,11 @@ class MainController extends ChangeNotifier {
     notifyListeners();
   }
 
-  // ---------------------------
-  // Recyclability check (API)
-  // ---------------------------
-  Map<String, dynamic>? _productInfo;
-  String? _checkError;
-  bool _checking = false;
-
-  Map<String, dynamic>? get productInfo => _productInfo;
-  String? get checkError => _checkError;
-  bool get checking => _checking;
-
-  /// Calls backend /api/checkRecyclable with the provided barcode.
-  Future<void> checkProductByBarcode(String barcode) async {
-    final code = barcode.trim();
-    if (code.isEmpty) return;
-
-    _checking = true;
-    _checkError = null;
-    _productInfo = null;
-    notifyListeners();
-
-    try {
-      final data = await RecyclableService.checkRecyclable(code);
-      _productInfo = data;
-    } catch (e) {
-      _checkError = e.toString();
-    } finally {
-      _checking = false;
-      notifyListeners();
-    }
-  }
-
-  /// Clears last recyclability result.
-  void clearProductInfo() {
-    _productInfo = null;
-    _checkError = null;
+  // ------ Pickup Schedule (Sprint 4) ------
+  void setSchedules(List<PickupSchedule> list) {
+    _schedules
+      ..clear()
+      ..addAll(list);
     notifyListeners();
   }
 }

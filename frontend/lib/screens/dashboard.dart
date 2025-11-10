@@ -1,6 +1,8 @@
+// lib/screens/dashboard.dart
 import 'package:flutter/material.dart';
 import 'recycling_centers_screen.dart';
-import 'reminders_screen.dart'; // Added import for your new screen
+import 'reminders_screen.dart';
+import 'pickup_schedule_screen.dart'; // ✅ added for Sprint 4
 
 class Dashboard extends StatelessWidget {
   const Dashboard({super.key});
@@ -98,6 +100,29 @@ class Dashboard extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (_) => const RemindersScreen()),
+                  );
+                },
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
+            // 🔹 View Pickup Schedule Button (Sprint 4 Feature)
+            Center(
+              child: TextButton.icon(
+                icon: const Icon(Icons.schedule, color: Colors.green),
+                label: const Text(
+                  'View Pickup Schedule',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.green,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const PickupScheduleScreen()),
                   );
                 },
               ),
