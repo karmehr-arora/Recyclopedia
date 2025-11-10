@@ -4,6 +4,10 @@ import 'package:flutter/material.dart';
 import '../screens/dashboard.dart';
 import '../screens/login_screen.dart';
 import '../screens/signup_screen.dart';
+import '../screens/scan_screen.dart';
+import '../screens/reminders_screen.dart';
+import '../screens/recycling_centers_screen.dart';
+import '../screens/pickup_schedule_screen.dart';
 
 import '../models/models.dart';
 import '../repository/app_repository.dart';
@@ -20,6 +24,10 @@ class MainController extends ChangeNotifier {
     Dashboard(),
     LoginScreen(),
     SignUpScreen(),
+    ScanScreen(),
+    RecyclingCentersScreen(),
+    RemindersScreen(),
+    PickupScheduleScreen()
   ];
 
   Widget get currentPage => _pages[_currentIndex];
@@ -49,10 +57,13 @@ class MainController extends ChangeNotifier {
   List<Reminder> _reminders = [];
   List<RecyclingCenter> _centers = [];
   List<PickupSchedule> _schedules = []; // Sprint 4
+  List<ProductInfo> _productInfo = [];
 
   List<Reminder> get reminders => List.unmodifiable(_reminders);
   List<RecyclingCenter> get centers => List.unmodifiable(_centers);
   List<PickupSchedule> get schedules => List.unmodifiable(_schedules);
+
+  List<ProductInfo> get productInfo => List.unmodifiable(_products);
 
   Future<void> _init() async {
     // Load existing data from repo
@@ -107,5 +118,9 @@ class MainController extends ChangeNotifier {
       ..clear()
       ..addAll(list);
     notifyListeners();
+  }
+
+  Future<void> checkProductByBarcode(String trim)async {
+    //TODO: method required for scan_screen.dart
   }
 }
