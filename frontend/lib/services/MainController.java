@@ -34,7 +34,7 @@ class MainController extends ChangeNotifier {
   // Repository and initial load
   final AppRepository repo;
   MainController({AppRepository? repository})
-      : repo = repository ?? MockAppRepository() {
+      : repo = repository ?? ApiAppRepository() {
     _init();
   }
 

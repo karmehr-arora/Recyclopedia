@@ -25,13 +25,13 @@ public class ReminderController {
     }
 
     @PutMapping("/{id}")
-    public Reminder update(@PathVariable String id, @RequestBody Reminder r) {
-        r.setId(id);
+    public Reminder update(@PathVariable Long id, @RequestBody Reminder r) {
+        r.setID(id);
         return service.update(r);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable String id) {
+    public void delete(@PathVariable Long id) {
         service.delete(id);
     }
 }

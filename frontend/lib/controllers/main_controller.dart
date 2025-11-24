@@ -7,6 +7,7 @@ import '../screens/signup_screen.dart';
 
 import '../models/models.dart';
 import '../repository/app_repository.dart';
+import '../repository/api_app_repository.dart';
 import '../common/mock_data.dart'; // mock reminders/centers/schedules
 
 class MainController extends ChangeNotifier {
@@ -39,7 +40,7 @@ class MainController extends ChangeNotifier {
   // ---------------------------
   final AppRepository repo;
   MainController({AppRepository? repository})
-      : repo = repository ?? MockAppRepository() {
+      : repo = repository ?? ApiAppRepository() {
     _init();
   }
 

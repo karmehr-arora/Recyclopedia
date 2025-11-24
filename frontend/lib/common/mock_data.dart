@@ -7,7 +7,7 @@ import '../models/models.dart';
 /// ----------------------
 final List<Reminder> kMockReminders = [
   Reminder(
-    id: 'r1',
+    id: 1,
     pickupType: PickupType.recycling,
     dayOfWeek: DateTime.thursday,
     time: const TimeOfDay(hour: 7, minute: 30),
@@ -16,7 +16,7 @@ final List<Reminder> kMockReminders = [
     notes: 'Remember to rinse containers.',
   ),
   Reminder(
-    id: 'r2',
+    id: 2,
     pickupType: PickupType.trash,
     dayOfWeek: DateTime.monday,
     time: const TimeOfDay(hour: 19, minute: 0),

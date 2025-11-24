@@ -1,5 +1,6 @@
 // lib/main.dart
 import 'package:flutter/material.dart';
+import 'package:frontend/repository/api_app_repository.dart';
 import 'package:provider/provider.dart';
 
 import 'controllers/main_controller.dart';
@@ -11,7 +12,7 @@ import 'screens/scan_screen.dart'; // <-- uses mobile_scanner
 void main() {
   runApp(
     ChangeNotifierProvider(
-      create: (_) => MainController(),
+      create: (_) => MainController(repository: ApiAppRepository()),
       child: const MyApp(),
     ),
   );
@@ -114,8 +115,8 @@ class _CheckScreenState extends State<CheckScreen> {
                 ElevatedButton(
                   onPressed: () async {
                     await context
-                        .read<MainController>()
-                        .checkProductByBarcode(_controller.text.trim());
+                        .read<MainController>();
+                        //.checkProductByBarcode(_controller.text.trim());
                   },
                   child: const Text('Check Recyclability'),
                 ),
@@ -127,7 +128,7 @@ class _CheckScreenState extends State<CheckScreen> {
                 ),
               ],
             ),
-            const SizedBox(height: 24),
+            /**const SizedBox(height: 24),
             if (main.checking)
               const Center(child: CircularProgressIndicator())
             else if (main.checkError != null)
@@ -144,6 +145,7 @@ class _CheckScreenState extends State<CheckScreen> {
                 )
               else
                 const Text("Enter a barcode to check recyclability."),
+            **/
           ],
         ),
       ),

@@ -21,7 +21,7 @@ class MockAppRepository implements AppRepository {
 
   final List<Reminder> _reminders = <Reminder>[
     Reminder(
-      id: 'r1',
+      id: 1,
       pickupType: PickupType.recycling,
       dayOfWeek: DateTime.thursday, // 1=Mon … 7=Sun (DateTime constants)
       time: const TimeOfDay(hour: 7, minute: 30),
@@ -30,7 +30,7 @@ class MockAppRepository implements AppRepository {
       notes: 'Remember to rinse containers.',
     ),
     Reminder(
-      id: 'r2',
+      id: 2,
       pickupType: PickupType.trash,
       dayOfWeek: DateTime.monday,
       time: const TimeOfDay(hour: 19, minute: 0),

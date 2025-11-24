@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import com.recyclopedia.backend.model.Reminder;
 
 @Repository
-public interface ReminderRepository extends JpaRepository<Reminder, String> {
+public interface ReminderRepository extends JpaRepository<Reminder, Long> {
 }

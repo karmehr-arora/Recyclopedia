@@ -25,7 +25,7 @@ public class ReminderService {
         return repo.save(r);
     }
 
-    public void delete(String id) {
+    public void delete(Long id) {
         repo.deleteById(id);
     }
 }
