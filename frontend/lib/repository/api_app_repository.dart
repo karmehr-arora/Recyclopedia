@@ -49,35 +49,45 @@ class ApiAppRepository implements AppRepository {
     if (res.statusCode != 200) throw Exception("Delete failed");
   }
 
-  //centers TBD
-  final List<RecyclingCenter> _centers = <RecyclingCenter>[
-    const RecyclingCenter(
-      id: 'c1',
-      name: 'City Recycling Center',
-      address: '123 Green St',
-      phone: '(555) 123-4567',
-      website: 'https://example.com/center',
-      accepts: ['Paper', 'Cardboard', 'PET (#1)', 'HDPE (#2)'],
-      hours: 'Mon–Sat 9:00–17:00',
-      notes: 'Closed on holidays.',
-    ),
-    const RecyclingCenter(
-      id: 'c2',
-      name: 'County Drop-off',
-      address: '45 Blue Ave',
-      accepts: ['Glass', 'Metal', 'Mixed Paper'],
-      hours: 'Sat 8:00–12:00',
-    ),
-  ];
-
   @override
   Future<List<RecyclingCenter>> fetchRecyclingCenters({String? query}) async {
-    final q = query?.toLowerCase().trim();
-    final items = (q == null || q.isEmpty)
-        ? _centers
-        : _centers.where((c) =>
-    c.name.toLowerCase().contains(q) ||
-        c.accepts.any((a) => a.toLowerCase().contains(q)));
-    return Future.value(List.unmodifiable(items));
+    final res = await http.get(Uri.parse("$baseUrl/centers"));
+
+    if (res.statusCode != 200) throw Exception("Failed to load reminders");
+
+    final List<dynamic> data = jsonDecode(res.body);
+    return data.map((json) => RecyclingCenter.fromJson(json)).toList();
+  }
+
+  @override
+  Future<RecyclingCenter> createRecyclingCenters(RecyclingCenter center) async {
+    final res = await http.post(
+      Uri.parse("$baseUrl/centers"),
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode(center.toJson()),
+    );
+
+    if (res.statusCode != 200 && res.statusCode != 201) throw Exception("Failed to create reminder");
+
+    return RecyclingCenter.fromJson(jsonDecode(res.body));
+  }
+
+  @override
+  Future<void> deleteRecyclingCenters(String id) async {
+    final res = await http.delete(Uri.parse("$baseUrl/centers/$id"));
+    if (res.statusCode != 200) throw Exception("Delete failed");
+  }
+
+  @override
+  Future<RecyclingCenter> updateRecyclingCenters(RecyclingCenter r) async {
+    final res = await http.put(
+      Uri.parse("$baseUrl/centers/${r.id}"),
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode(r.toJson()),
+    );
+
+    if (res.statusCode != 200) throw Exception("Failed to update reminder");
+
+    return RecyclingCenter.fromJson(jsonDecode(res.body));
   }
 }

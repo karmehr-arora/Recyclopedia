@@ -22,6 +22,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/checkRecyclable").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/reminders/**").permitAll()  // <-- Add this line
+                        .requestMatchers("/api/centers/**").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // preflight (web)
                         // everything else protected
                         .anyRequest().authenticated()

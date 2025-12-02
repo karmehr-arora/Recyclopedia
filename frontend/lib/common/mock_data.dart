@@ -30,20 +30,20 @@ final List<Reminder> kMockReminders = [
 /// ----------------------
 final List<RecyclingCenter> kMockCenters = [
   const RecyclingCenter(
-    id: 'c1',
+    id: 1,
     name: 'City Recycling Center',
     address: '123 Green St',
     phone: '(555) 123-4567',
     website: 'https://example.com/center',
-    accepts: ['Paper', 'Cardboard', 'PET (#1)', 'HDPE (#2)'],
+    accepts: 'Paper, Cardboard, PET (#1), HDPE (#2)',
     hours: 'Mon–Sat 9:00–17:00',
     notes: 'Closed on holidays.',
   ),
   const RecyclingCenter(
-    id: 'c2',
+    id: 2,
     name: 'County Drop-off',
     address: '45 Blue Ave',
-    accepts: ['Glass', 'Metal', 'Mixed Paper'],
+    accepts: 'Glass, Metal, Mixed Paper',
     hours: 'Sat 8:00–12:00',
   ),
 ];
