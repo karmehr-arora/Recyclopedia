@@ -68,7 +68,7 @@ class MainController extends ChangeNotifier {
   }
 
   // -------- Reminders actions --------
-  Future<void> toggleReminder(String id) async {
+  Future<void> toggleReminder(int? id) async {
     final i = _reminders.indexWhere((r) => r.id == id);
     if (i == -1) return;
     final updated = _reminders[i].copyWith(enabled: !_reminders[i].enabled);

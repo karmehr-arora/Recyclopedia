@@ -25,7 +25,7 @@ class ApiAppRepository implements AppRepository {
       body: jsonEncode(r.toJson()),
     );
 
-    if (res.statusCode != 201) throw Exception("Failed to create reminder");
+    if (res.statusCode != 200 && res.statusCode != 201) throw Exception("Failed to create reminder");
 
     return Reminder.fromJson(jsonDecode(res.body));
   }
