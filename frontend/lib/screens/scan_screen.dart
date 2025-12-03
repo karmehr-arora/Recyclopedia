@@ -32,7 +32,7 @@ class _ScanScreenState extends State<ScanScreen> {
               if (value == null || value.trim().isEmpty) return;
 
               _handled = true;
-              await main.checkProductByBarcode(value.trim());
+              //await main.checkProductByBarcode(value.trim());
 
               if (!mounted) return;
               Navigator.pop(context); // go back to show result in previous UI

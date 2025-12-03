@@ -2,30 +2,30 @@ package com.recyclopedia.backend.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import com.recyclopedia.backend.model.Reminder;
-import com.recyclopedia.backend.service.ReminderService;
+import com.recyclopedia.backend.model.RecyclingCenter;
+import com.recyclopedia.backend.service.RecyclingCenterService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/reminders")
-public class ReminderController {
+@RequestMapping("/api/centers")
+public class RecyclingCenterController {
 
     @Autowired
-    private ReminderService service;
+    private RecyclingCenterService service;
 
     @GetMapping
-    public List<Reminder> getAll() {
+    public List<RecyclingCenter> getAll() {
         return service.getAll();
     }
 
     @PostMapping
-    public Reminder create(@RequestBody Reminder r) {
+    public RecyclingCenter create(@RequestBody RecyclingCenter r) {
         return service.create(r);
     }
 
     @PutMapping("/{id}")
-    public Reminder update(@PathVariable Long id, @RequestBody Reminder r) {
+    public RecyclingCenter update(@PathVariable Long id, @RequestBody RecyclingCenter r) {
         r.setID(id);
         return service.update(r);
     }
