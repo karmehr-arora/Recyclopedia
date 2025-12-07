@@ -1,5 +1,4 @@
 // lib/models/pickup_schedule.dart
-import 'package:flutter/material.dart';
 
 /// Represents a single pickup schedule entry for a specific area.
 /// Example:

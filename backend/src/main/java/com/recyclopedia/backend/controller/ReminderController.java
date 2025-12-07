@@ -8,6 +8,7 @@ import com.recyclopedia.backend.service.ReminderService;
 import java.util.List;
 
 @RestController
+@CrossOrigin // enables you to get input/output from a different port
 @RequestMapping("/api/reminders")
 public class ReminderController {
 
