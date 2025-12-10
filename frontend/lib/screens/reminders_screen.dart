@@ -55,7 +55,7 @@ class RemindersScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           final newReminder = Reminder(
-            id: DateTime.now().millisecondsSinceEpoch.toString(),
+            id: null, //let backend autoincrement it
             pickupType: PickupType.recycling,
             dayOfWeek: DateTime.friday, // <-- no .weekday (it's already an int)
             time: const TimeOfDay(hour: 7, minute: 30),

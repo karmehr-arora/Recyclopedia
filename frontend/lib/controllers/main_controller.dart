@@ -11,6 +11,7 @@ import '../screens/pickup_schedule_screen.dart';
 
 import '../models/models.dart';
 import '../repository/app_repository.dart';
+import '../repository/api_app_repository.dart';
 import '../common/mock_data.dart'; // mock reminders/centers/schedules
 
 class MainController extends ChangeNotifier {
@@ -47,7 +48,7 @@ class MainController extends ChangeNotifier {
   // ---------------------------
   final AppRepository repo;
   MainController({AppRepository? repository})
-      : repo = repository ?? MockAppRepository() {
+      : repo = repository ?? ApiAppRepository() {
     _init();
   }
 
@@ -78,7 +79,7 @@ class MainController extends ChangeNotifier {
   }
 
   // -------- Reminders actions --------
-  Future<void> toggleReminder(String id) async {
+  Future<void> toggleReminder(int? id) async {
     final i = _reminders.indexWhere((r) => r.id == id);
     if (i == -1) return;
     final updated = _reminders[i].copyWith(enabled: !_reminders[i].enabled);
